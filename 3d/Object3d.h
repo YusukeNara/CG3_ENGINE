@@ -9,6 +9,7 @@
 
 #include "Model.h"
 #include "Camera.h"
+#include "Light.h"
 
 /// <summary>
 /// 3Dオブジェクト
@@ -38,7 +39,10 @@ public: // サブクラス
 	// 定数バッファ用データ構造体B0
 	struct ConstBufferDataB0
 	{
-		XMMATRIX mat;	// ３Ｄ変換行列
+		//XMMATRIX mat;	// ３Ｄ変換行列
+		XMMATRIX viewproj;
+		XMMATRIX world;
+		XMFLOAT3 campos;
 	};
 
 public: // 静的メンバ関数
@@ -87,6 +91,8 @@ private: // 静的メンバ変数
 	static PipelineSet pipelineSet;
 	// カメラ
 	static Camera* camera;
+	// ライト
+	static Light *light;
 
 public: // メンバ関数
 	bool Initialize();
@@ -105,6 +111,8 @@ public: // メンバ関数
 	/// </summary>
 	/// <returns>座標</returns>
 	const XMFLOAT3& GetPosition() { return position; }
+
+	const XMFLOAT3 &GetRotation() { return rotation; }
 
 	/// <summary>
 	/// 座標の設定
@@ -131,6 +139,9 @@ public: // メンバ関数
 	/// </summary>
 	/// <param name="isBillboard">ビルボードか</param>
 	void SetBillboard(bool isBillboard) { this->isBillboard = isBillboard; }
+
+	//ライトセット
+	static void SetLight(Light *light);
 
 private: // メンバ変数
 	ComPtr<ID3D12Resource> constBuffB0; // 定数バッファ

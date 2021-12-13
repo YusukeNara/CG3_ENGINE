@@ -10,6 +10,7 @@
 #include "DebugText.h"
 #include "Audio.h"
 #include "DebugCamera.h"
+#include "Light.h"
 
 /// <summary>
 /// ゲームシーン
@@ -84,5 +85,7 @@ private: // メンバ変数
 	Model *sphereModel = nullptr;
 	Model *sphereModel2 = nullptr;
 	Object3d *sphereObj = nullptr;
+
+	Light *light = nullptr;
 };
 

@@ -20,6 +20,7 @@ GameScene::~GameScene()
 	safe_delete(sphereModel);
 	safe_delete(sphereModel2);
 	safe_delete(sphereObj);
+	safe_delete(light);
 }
 
 void GameScene::Initialize(DirectXCommon* dxCommon, Input* input, Audio * audio)
@@ -76,6 +77,13 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input, Audio * audio)
 	// カメラ注視点をセット
 	camera->SetTarget({0, 1, 0});
 	camera->SetDistance(3.0f);
+
+	//ライト生成
+	light = Light::Create();
+	//色設定
+	light->SetLightColor({ 1,1,1 });
+	//3Dオブジェクトにライトをセット
+	Object3d::SetLight(light);
 }
 
 void GameScene::Update()
@@ -86,12 +94,19 @@ void GameScene::Update()
 	camera->Update();
 	particleMan->Update();
 
+	XMFLOAT3 rot = sphereObj->GetRotation();
+	rot.y += 1.0f;
+	objFighter->SetRotation(rot);
+	sphereObj->SetRotation(rot);
+
 	objSkydome->Update();
 	objGround->Update();
 	objFighter->SetPosition({ 1,0,0 });
 	objFighter->Update();
 	sphereObj->SetPosition({ -1,1,0 });
 	sphereObj->Update();
+
+	light->Update();
 }
 
 void GameScene::Draw()
