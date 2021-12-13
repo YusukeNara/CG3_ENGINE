@@ -66,7 +66,7 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input, Audio * audio)
 	modelGround = Model::CreateFromOBJ("ground");
 	modelFighter = Model::CreateFromOBJ("chr_sword");
 	sphereModel = Model::CreateFromOBJ("sphere");
-	sphereModel2 = Model::CreateFromOBJ("sphere", true);
+	sphereModel2 = Model::CreateFromOBJ("untitled", true);
 
 	// 3Dオブジェクト生成
 	objSkydome = Object3d::Create(modelSkydome);
@@ -101,9 +101,9 @@ void GameScene::Update()
 
 	objSkydome->Update();
 	objGround->Update();
-	objFighter->SetPosition({ 1,0,0 });
+	objFighter->SetPosition({ 2,0,0 });
 	objFighter->Update();
-	sphereObj->SetPosition({ -1,1,0 });
+	sphereObj->SetPosition({ -2,0,0 });
 	sphereObj->Update();
 
 	light->Update();

@@ -13,6 +13,29 @@ float4 main(VSOutput input) : SV_TARGET
     //float4 texcolor = tex.Sample(smp, input.uv);
     //return float4(texcolor.rgb * shade_color, texcolor.a * m_alpha);
 
+    //テクスチャマッピング
     float4 texColor = tex.Sample(smp, input.uv);
-    return input.color;
+    
+    //シェーディング色
+    float4 shaderColor;
+    //光沢度
+    const float shininess = 4.0f;
+    //頂点から視点への法線ベクトル
+    float3 eyedir = normalize(campos - input.worldpos.xyz);
+    //ライトに向かうベクトルと法線の内積
+    float3 dotLightNormal = dot(lightv, input.normal);
+    //反射光ベクトル
+    float3 reflect = normalize(-lightv + 2 * dotLightNormal * input.normal);
+    //環境反射
+    float3 ambient = m_ambient;
+    //拡散反射
+    float3 diffuse = dotLightNormal * m_diffuse;
+    //鏡面反射
+    float3 specular = pow(saturate(dot(reflect, eyedir)), shininess) * m_specular;
+    
+    //すべて加算
+    shaderColor.xyz = (ambient + diffuse + specular) * lightcolor;
+    shaderColor.a = m_alpha;
+    
+    return shaderColor * texColor;
 }
