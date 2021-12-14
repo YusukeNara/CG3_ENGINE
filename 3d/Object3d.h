@@ -93,6 +93,7 @@ private: // 静的メンバ変数
 	static Camera* camera;
 	// ライト
 	static Light *light;
+	static Light *light_2;
 
 public: // メンバ関数
 	bool Initialize();
@@ -141,7 +142,7 @@ public: // メンバ関数
 	void SetBillboard(bool isBillboard) { this->isBillboard = isBillboard; }
 
 	//ライトセット
-	static void SetLight(Light *light);
+	static void SetLight(Light *light,Light *light2);
 
 private: // メンバ変数
 	ComPtr<ID3D12Resource> constBuffB0; // 定数バッファ

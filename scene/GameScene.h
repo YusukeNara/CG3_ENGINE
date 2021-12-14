@@ -87,5 +87,6 @@ private: // メンバ変数
 	Object3d *sphereObj = nullptr;
 
 	Light *light = nullptr;
+	Light *light2 = nullptr;
 };
 

@@ -21,9 +21,10 @@ GameScene::~GameScene()
 	safe_delete(sphereModel2);
 	safe_delete(sphereObj);
 	safe_delete(light);
+	safe_delete(light2);
 }
 
-void GameScene::Initialize(DirectXCommon* dxCommon, Input* input, Audio * audio)
+void GameScene::Initialize(DirectXCommon *dxCommon, Input *input, Audio *audio)
 {
 	// nullptrチェック
 	assert(dxCommon);
@@ -43,7 +44,7 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input, Audio * audio)
 	// デバッグテキスト用テクスチャ読み込み
 	if (!Sprite::LoadTexture(debugTextTexNumber, L"Resources/debugfont.png")) {
 		assert(0);
-		return ;
+		return;
 	}
 	// デバッグテキスト初期化
 	debugText.Initialize(debugTextTexNumber);
@@ -75,15 +76,18 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input, Audio * audio)
 	sphereObj = Object3d::Create(sphereModel2);
 
 	// カメラ注視点をセット
-	camera->SetTarget({0, 1, 0});
-	camera->SetDistance(3.0f);
+	camera->SetTarget({ 0, 1, 0 });
+	camera->SetDistance(5.0f);
 
 	//ライト生成
 	light = Light::Create();
+	light2 = Light::Create();
+	light2->SetLightDir({ -1,0,1,0 });
 	//色設定
 	light->SetLightColor({ 1,1,1 });
+	light2->SetLightColor({ 1,1,1 });
 	//3Dオブジェクトにライトをセット
-	Object3d::SetLight(light);
+	Object3d::SetLight(light, light2);
 }
 
 void GameScene::Update()
@@ -101,12 +105,13 @@ void GameScene::Update()
 
 	objSkydome->Update();
 	objGround->Update();
-	objFighter->SetPosition({ 2,0,0 });
+	objFighter->SetPosition({ 2,1.5f,0 });
 	objFighter->Update();
-	sphereObj->SetPosition({ -2,0,0 });
+	sphereObj->SetPosition({ -2,1.5f,0 });
 	sphereObj->Update();
 
 	light->Update();
+	light2->Update();
 }
 
 void GameScene::Draw()
@@ -133,8 +138,8 @@ void GameScene::Draw()
 #pragma region 3D描画
 	// 3Dオブジェクトの描画
 	Object3d::PreDraw(cmdList);
-	//objSkydome->Draw();
-	//objGround->Draw();
+	objSkydome->Draw();
+	objGround->Draw();
 	objFighter->Draw();
 	sphereObj->Draw();
 	Object3d::PostDraw();

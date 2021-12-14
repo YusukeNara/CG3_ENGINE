@@ -23,18 +23,26 @@ float4 main(VSOutput input) : SV_TARGET
     //頂点から視点への法線ベクトル
     float3 eyedir = normalize(campos - input.worldpos.xyz);
     //ライトに向かうベクトルと法線の内積
-    float3 dotLightNormal = dot(lightv, input.normal);
+    float3 dotLightNormal1 = dot(lightv, input.normal);
+    float3 dotLightNormal2 = dot(lightv2, input.normal);
     //反射光ベクトル
-    float3 reflect = normalize(-lightv + 2 * dotLightNormal * input.normal);
+    float3 reflect1 = normalize(-lightv + 2 * dotLightNormal1 * input.normal);
+    float3 reflect2 = normalize(-lightv2 + 2 * dotLightNormal2 * input.normal);
     //環境反射
     float3 ambient = m_ambient;
-    //拡散反射
-    float3 diffuse = dotLightNormal * m_diffuse;
-    //鏡面反射
-    float3 specular = pow(saturate(dot(reflect, eyedir)), shininess) * m_specular;
     
+    //拡散反射
+    float3 diffuse = dotLightNormal1 * m_diffuse;
+    float3 diffuse2 = dotLightNormal2 * m_diffuse;
+    
+    //鏡面反射
+    float3 specular = pow(saturate(dot(reflect1, eyedir)), shininess) * m_specular;
+    float3 specular2 = pow(saturate(dot(reflect2, eyedir)), shininess) * m_specular;
+    
+    float3 shade1 = (ambient + diffuse + specular) * lightcolor;
+    float3 shade2 = (ambient + diffuse2 + specular2) * lightColor2;
     //すべて加算
-    shaderColor.xyz = (ambient + diffuse + specular) * lightcolor;
+    shaderColor.rgb = shade1 + shade2;
     shaderColor.a = m_alpha;
     
     return shaderColor * texColor;

@@ -20,6 +20,12 @@ cbuffer cbuff2 : register(b2)
     float3 lightcolor;
 }
 
+cbuffer cbuff3 : register(b3)
+{
+    float3 lightv2;
+    float3 lightColor2;
+}
+
 // 頂点シェーダーからピクセルシェーダーへのやり取りに使用する構造体
 struct VSOutput
 {
